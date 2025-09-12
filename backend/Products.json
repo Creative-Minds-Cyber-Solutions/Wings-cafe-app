@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Chocolate Bar",
+    "description": "milk chocolate bar,60g",
+    "category": "snacks",
+    "price": 15,
+    "quantity": 40,
+    "id": 1757604738097,
+    "image": "Chocolate Bar.jpg"
+  },
+  {
+    "name": "Potato Chips",
+    "description": "Salted potato chips,40g",
+    "category": "snacks",
+    "price": 12,
+    "quantity": 80,
+    "id": 1757604801893,
+    "image": "Potato Chips.png"
+  },
+  {
+    "name": "Shortbread Biscuits",
+    "description": "Buttery shortbread,30g",
+    "category": "snacks",
+    "price": 10,
+    "quantity": 10,
+    "id": 1757604862767,
+    "image": "Shortbread Biscuits.jpg"
+  },
+  {
+    "name": "Yogurt",
+    "description": "150ml assorted dairy yogurt",
+    "category": "snacks",
+    "price": 25,
+    "quantity": 1,
+    "id": 1757605085304,
+    "image": "Yogurt.jpg"
+  },
+  {
+    "name": "Pap and Boerwors Meal",
+    "description": "Maize pap with grilled boerwors and salsa",
+    "category": "meal",
+    "price": 30,
+    "quantity": 5,
+    "id": 1757605669656,
+    "image": "Pap and Boerwors Meal.jpg"
+  },
+  {
+    "name": "Pap and Pork Meal",
+    "description": "Maize pap with grilled pork and gravy",
+    "category": "meal",
+    "price": 30,
+    "quantity": 4,
+    "id": 1757605793509,
+    "image": "Pap and Pork Meal.jpeg"
+  },
+  {
+    "name": "Dagwood Meal",
+    "description": "triple layer sandwich with egg, bacon, lettuce and tomato",
+    "category": "meal",
+    "price": 40,
+    "quantity": 60,
+    "id": 1757605926273,
+    "image": "Dagwood Meal.jpg"
+  },
+  {
+    "name": "Burger Meal",
+    "description": "beef burger with lettuce, tomato and cheese",
+    "category": "meal",
+    "price": 40,
+    "quantity": 10,
+    "id": 1757606013129,
+    "image": "Burger Meal.jpg"
+  },
+  {
+    "name": "Coffee",
+    "description": "freshly brewed roast coffee",
+    "category": "Drink",
+    "price": 12,
+    "quantity": 75,
+    "id": 1757606167453,
+    "image": "Coffee.jpg"
+  },
+  {
+    "name": "Tea",
+    "description": "hot black tea with optional milk",
+    "category": "drink",
+    "price": 12,
+    "quantity": 75,
+    "id": 1757606204934,
+    "image": "Tea.jpg"
+  },
+  {
+    "name": "Fruit Juice",
+    "description": "250 ml box of fruit juice",
+    "category": "drink",
+    "price": 20,
+    "quantity": 100,
+    "id": 1757606260697,
+    "image": "Fruit Juice.jpeg"
+  },
+  {
+    "name": "Bottled Water",
+    "description": "still mineral water",
+    "category": "drink",
+    "price": 12,
+    "quantity": 200,
+    "id": 1757606356546,
+    "image": "Bottled Water.png"
+  }
+]

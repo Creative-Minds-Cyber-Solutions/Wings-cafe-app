@@ -1,0 +1,104 @@
+import React, { useState, useEffect } from 'react';
+
+function Sales() {
+  const [products, setProducts] = useState([]);
+  const [sales, setSales] = useState([]);
+  const [sale, setSale] = useState({ productId: '', quantity: 1 });
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    fetch('http://localhost:5000/products')
+      .then(res => res.json())
+      .then(data => setProducts(data));
+
+    fetch('http://localhost:5000/sales')
+      .then(res => res.json())
+      .then(data => setSales(data.slice(-5).reverse())); // latest 5 sales
+  }, []);
+
+  const handleSale = () => {
+    const product = products.find(p => p.id == sale.productId);
+    if (!product) return;
+
+    if (sale.quantity > product.quantity) {
+      alert("Not enough stock available");
+      return;
+    }
+
+    const total = product.price * sale.quantity;
+    const newSale = {
+      id: Date.now(),
+      productId: product.id,
+      quantity: sale.quantity,
+      total,
+      timestamp: new Date().toISOString()
+    };
+
+    fetch('http://localhost:5000/sales', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newSale)
+    }).then(() => {
+      setSales([newSale, ...sales.slice(0, 4)]); // update recent sales
+      setMessage(`✅ Sale recorded: ${product.name} x${sale.quantity} = R${total}`);
+      setTimeout(() => setMessage(''), 3000);
+    });
+
+    fetch(`http://localhost:5000/products/${product.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...product, quantity: product.quantity - sale.quantity })
+    });
+
+    setSale({ productId: '', quantity: 1 });
+  };
+
+  return (
+    <div className="module-container">
+      <h2>Sales</h2>
+
+      {message && <div className="success-message">{message}</div>}
+
+      <select value={sale.productId} onChange={e => setSale({ ...sale, productId: e.target.value })}>
+        <option value="">Select Product</option>
+        {products.map(p => (
+          <option key={p.id} value={p.id}>
+            {p.name} (Qty: {p.quantity})
+          </option>
+        ))}
+      </select>
+
+      <input
+        type="number"
+        min="1"
+        placeholder="Quantity"
+        value={sale.quantity}
+        onChange={e => setSale({ ...sale, quantity: parseInt(e.target.value) })}
+      />
+
+      <button onClick={handleSale}>Record Sale</button>
+
+      <h3 style={{ marginTop: '2rem' }}>Recent Sales</h3>
+      <table>
+        <thead>
+          <tr><th>Product</th><th>Qty</th><th>Total</th><th>Time</th></tr>
+        </thead>
+        <tbody>
+          {sales.map(s => {
+            const product = products.find(p => p.id === s.productId);
+            return (
+              <tr key={s.id}>
+                <td>{product?.name || 'Deleted'}</td>
+                <td>{s.quantity}</td>
+                <td>R{s.total}</td>
+                <td>{new Date(s.timestamp).toLocaleString()}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default Sales;
