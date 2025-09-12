@@ -17,7 +17,7 @@ function Sales() {
   }, []);
 
   const handleSale = () => {
-    const product = products.find(p => p.id == sale.productId);
+    const product = products.find(p => p.id === sale.productId);
     if (!product) return;
 
     if (sale.quantity > product.quantity) {
