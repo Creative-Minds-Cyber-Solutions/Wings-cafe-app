@@ -13,7 +13,7 @@ function Sales() {
 
     fetch('http://localhost:5000/sales')
       .then(res => res.json())
-      .then(data => setSales(data.slice(-5).reverse())); // latest 5 sales
+      .then(data => setSales(data.slice(-5).reverse()));
   }, []);
 
   const handleSale = () => {
@@ -39,7 +39,7 @@ function Sales() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newSale)
     }).then(() => {
-      setSales([newSale, ...sales.slice(0, 4)]); // update recent sales
+      setSales([newSale, ...sales.slice(0, 4)]);
       setMessage(`✅ Sale recorded: ${product.name} x${sale.quantity} = R${total}`);
       setTimeout(() => setMessage(''), 3000);
     });
@@ -59,25 +59,40 @@ function Sales() {
 
       {message && <div className="success-message">{message}</div>}
 
-      <select value={sale.productId} onChange={e => setSale({ ...sale, productId: e.target.value })}>
-        <option value="">Select Product</option>
-        {products.map(p => (
-          <option key={p.id} value={p.id}>
-            {p.name} (Qty: {p.quantity})
-          </option>
-        ))}
-      </select>
+      {/* Input Card */}
+      <div className="sale-input-card">
+        <h3>Record a Sale</h3>
 
-      <input
-        type="number"
-        min="1"
-        placeholder="Quantity"
-        value={sale.quantity}
-        onChange={e => setSale({ ...sale, quantity: parseInt(e.target.value) })}
-      />
+        <label>
+          <span>Product:</span>
+          <select
+            value={sale.productId}
+            onChange={e => setSale({ ...sale, productId: e.target.value })}
+          >
+            <option value="">Select Product</option>
+            {products.map(p => (
+              <option key={p.id} value={p.id}>
+                {p.name} (Qty: {p.quantity})
+              </option>
+            ))}
+          </select>
+        </label>
 
-      <button onClick={handleSale}>Record Sale</button>
+        <label>
+          <span>Quantity:</span>
+          <input
+            type="number"
+            min="1"
+            placeholder="Quantity"
+            value={sale.quantity}
+            onChange={e => setSale({ ...sale, quantity: parseInt(e.target.value) })}
+          />
+        </label>
 
+        <button onClick={handleSale}>Record Sale</button>
+      </div>
+
+      {/* Recent Sales */}
       <h3 style={{ marginTop: '2rem' }}>Recent Sales</h3>
       <table>
         <thead>

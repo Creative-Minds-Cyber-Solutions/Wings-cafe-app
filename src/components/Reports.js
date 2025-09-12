@@ -4,12 +4,12 @@ function Reports() {
   const [report, setReport] = useState({});
 
   const fetchReport = () => {
-    setReport({}); // Clear previous state
+    setReport({});
     fetch('http://localhost:5000/reports/summary')
       .then(res => res.json())
       .then(data => {
-        console.log("Fetched report:", data); // Debug log
-        setReport({ ...data }); // Defensive update
+        console.log("Fetched report:", data);
+        setReport({ ...data });
       });
   };
 
@@ -20,15 +20,19 @@ function Reports() {
   const salesTrends = Array.isArray(report.salesTrends) ? report.salesTrends : [];
   const dailyTrends = Array.isArray(report.dailyTrends) ? report.dailyTrends : [];
 
+  const formatCurrency = value =>
+    typeof value === 'number' && !isNaN(value) ? `R${value.toFixed(2)}` : 'R0.00';
+
   return (
     <div className="report-container">
-      <h2>📊 Inventory & Sales Summary</h2>
-      <button className="refresh-btn" onClick={fetchReport}>🔄 Refresh Report</button>
+      <h2>Inventory & Sales Summary</h2>
+      <button className="refresh-btn" onClick={fetchReport}>Refresh Report</button>
 
+      {/* Summary Cards */}
       <div className="report-cards">
         <div className="report-card">
           <h4>Total Sales</h4>
-          <p>R{report.totalSales?.toFixed(2)}</p>
+          <p>{formatCurrency(report.totalSales)}</p>
         </div>
         <div className="report-card">
           <h4>Products in Inventory</h4>
@@ -40,7 +44,8 @@ function Reports() {
         </div>
       </div>
 
-      <h3>📈 Sales Trends by Product</h3>
+      {/* Sales Trends */}
+      <h3>Sales Trends by Product</h3>
       {salesTrends.length > 0 ? (
         <table className="sales-trend-table">
           <thead>
@@ -62,7 +67,8 @@ function Reports() {
         <p>No sales data available yet.</p>
       )}
 
-      <h3>📅 Daily Sales Breakdown</h3>
+      {/* Daily Breakdown */}
+      <h3>Daily Sales Breakdown</h3>
       {dailyTrends.length > 0 ? (
         dailyTrends.map(day => (
           <div key={day.date} className="daily-trend-block">
@@ -89,7 +95,8 @@ function Reports() {
         <p>No daily sales data available.</p>
       )}
 
-      <h3>⚠️ Low Stock Items</h3>
+      {/* Low Stock */}
+      <h3>Low Stock Items</h3>
       {report.lowStock?.length > 0 ? (
         <table className="low-stock-table">
           <thead>
@@ -108,7 +115,7 @@ function Reports() {
           </tbody>
         </table>
       ) : (
-        <p className="success">✅ All stock levels are healthy</p>
+        <p className="success">All stock levels are healthy</p>
       )}
     </div>
   );

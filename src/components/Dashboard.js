@@ -7,17 +7,20 @@ import reportsImg from '../Assets/rep.png';
 function Dashboard() {
   const [products, setProducts] = useState([]);
 
-  useEffect(() => {
+  const fetchProducts = () => {
     fetch('http://localhost:5000/products')
       .then(res => res.json())
       .then(data => setProducts(data));
+  };
+
+  useEffect(() => {
+    fetchProducts();
   }, []);
 
   return (
     <div className="dashboard">
       <h2>Wings Café Dashboard</h2>
 
-      {/* Navigation Cards */}
       <div className="dashboard-grid">
         <Link to="/inventory" className="dashboard-card">
           <img src={inventoryImg} alt="Inventory" />
@@ -33,7 +36,6 @@ function Dashboard() {
         </Link>
       </div>
 
-      {/* Inventory Display */}
       <h3>Menu Items</h3>
       <div className="product-grid">
         {products.map(product => (
@@ -50,7 +52,7 @@ function Dashboard() {
             <p>R{parseFloat(product.price).toFixed(2)}</p>
             <p>Stock: {product.quantity}</p>
             {product.quantity < 20 && (
-              <p className="low-stock-alert">⚠️ Low stock!</p>
+              <p className="low-stock-alert">Low stock!</p>
             )}
           </div>
         ))}

@@ -4,7 +4,7 @@
     "description": "milk chocolate bar,60g",
     "category": "snacks",
     "price": 15,
-    "quantity": 40,
+    "quantity": 100,
     "id": 1757604738097,
     "image": "Chocolate Bar.jpg"
   },
@@ -13,7 +13,7 @@
     "description": "Salted potato chips,40g",
     "category": "snacks",
     "price": 12,
-    "quantity": 80,
+    "quantity": 18,
     "id": 1757604801893,
     "image": "Potato Chips.png"
   },
@@ -22,7 +22,7 @@
     "description": "Buttery shortbread,30g",
     "category": "snacks",
     "price": 10,
-    "quantity": 10,
+    "quantity": 120,
     "id": 1757604862767,
     "image": "Shortbread Biscuits.jpg"
   },
@@ -40,7 +40,7 @@
     "description": "Maize pap with grilled boerwors and salsa",
     "category": "meal",
     "price": 30,
-    "quantity": 5,
+    "quantity": 120,
     "id": 1757605669656,
     "image": "Pap and Boerwors Meal.jpg"
   },
@@ -49,7 +49,7 @@
     "description": "Maize pap with grilled pork and gravy",
     "category": "meal",
     "price": 30,
-    "quantity": 4,
+    "quantity": 60,
     "id": 1757605793509,
     "image": "Pap and Pork Meal.jpeg"
   },
@@ -58,7 +58,7 @@
     "description": "triple layer sandwich with egg, bacon, lettuce and tomato",
     "category": "meal",
     "price": 40,
-    "quantity": 60,
+    "quantity": 4,
     "id": 1757605926273,
     "image": "Dagwood Meal.jpg"
   },
@@ -67,7 +67,7 @@
     "description": "beef burger with lettuce, tomato and cheese",
     "category": "meal",
     "price": 40,
-    "quantity": 10,
+    "quantity": 75,
     "id": 1757606013129,
     "image": "Burger Meal.jpg"
   },
@@ -76,7 +76,7 @@
     "description": "freshly brewed roast coffee",
     "category": "Drink",
     "price": 12,
-    "quantity": 75,
+    "quantity": 15,
     "id": 1757606167453,
     "image": "Coffee.jpg"
   },

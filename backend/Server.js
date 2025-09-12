@@ -31,15 +31,17 @@ app.post('/products', (req, res) => {
 });
 
 app.put('/products/:id', (req, res) => {
+  const productId = Number(req.params.id);
   const products = read(PRODUCTS).map(p =>
-    p.id == req.params.id ? { ...p, ...req.body } : p
+    p.id === productId ? { ...p, ...req.body } : p
   );
   write(PRODUCTS, products);
   res.json({ success: true });
 });
 
 app.delete('/products/:id', (req, res) => {
-  const products = read(PRODUCTS).filter(p => p.id != req.params.id);
+  const productId = Number(req.params.id);
+  const products = read(PRODUCTS).filter(p => p.id !== productId);
   write(PRODUCTS, products);
   res.json({ success: true });
 });
@@ -52,15 +54,24 @@ app.get('/sales', (req, res) => {
 
 app.post('/sales', (req, res) => {
   const sales = read(SALES);
+  const products = read(PRODUCTS);
   const newSale = req.body;
+
+  const product = products.find(p => p.id === newSale.productId);
+  if (!product) {
+    return res.status(404).json({ error: 'Product not found' });
+  }
+
+  newSale.total = product.price * newSale.quantity;
+  newSale.timestamp = newSale.timestamp || new Date().toISOString();
+
   sales.push(newSale);
   write(SALES, sales);
 
-  // Deduct stock from product
-  const products = read(PRODUCTS).map(p =>
-    p.id == newSale.productId ? { ...p, quantity: p.quantity - newSale.quantity } : p
+  const updatedProducts = products.map(p =>
+    p.id === newSale.productId ? { ...p, quantity: p.quantity - newSale.quantity } : p
   );
-  write(PRODUCTS, products);
+  write(PRODUCTS, updatedProducts);
 
   res.status(201).json(newSale);
 });
@@ -71,45 +82,49 @@ app.get('/reports/summary', (req, res) => {
   const products = read(PRODUCTS);
   const sales = read(SALES);
 
-  const totalSales = sales.reduce((sum, s) => sum + s.total, 0);
+  const totalSales = sales.reduce((sum, s) => {
+    const value = typeof s.total === 'number' ? s.total : parseFloat(s.total);
+    return sum + (isNaN(value) ? 0 : value);
+  }, 0);
+
   const lowStock = products.filter(p => p.quantity < 5);
 
-  // Total sales per product
   const salesMap = {};
   for (const s of sales) {
     if (!salesMap[s.productId]) {
-      salesMap[s.productId] = 0;
+      salesMap[s.productId] = { totalSold: 0 };
     }
-    salesMap[s.productId] += s.quantity;
+    salesMap[s.productId].totalSold += s.quantity;
   }
 
-  const salesTrends = Object.entries(salesMap).map(([productId, totalSold]) => {
-    const product = products.find(p => p.id == productId);
+  const salesTrends = Object.entries(salesMap).map(([productId, data]) => {
+    const product = products.find(p => p.id === Number(productId));
     return {
-      productId: parseInt(productId),
+      productId: Number(productId),
       name: product?.name || 'Unknown',
-      totalSold
+      totalSold: data.totalSold
     };
   }).sort((a, b) => b.totalSold - a.totalSold);
 
-  // Daily sales breakdown per product
   const dailyTrends = {};
   for (const s of sales) {
-    const date = new Date(s.timestamp).toISOString().split('T')[0]; // YYYY-MM-DD
+    const date = new Date(s.timestamp).toISOString().split('T')[0];
     if (!dailyTrends[date]) dailyTrends[date] = {};
-    if (!dailyTrends[date][s.productId]) dailyTrends[date][s.productId] = 0;
-    dailyTrends[date][s.productId] += s.quantity;
+    if (!dailyTrends[date][s.productId]) {
+      dailyTrends[date][s.productId] = { quantity: 0 };
+    }
+    dailyTrends[date][s.productId].quantity += s.quantity;
   }
 
   const formattedDailyTrends = Object.entries(dailyTrends).map(([date, productsSold]) => {
     return {
       date,
-      sales: Object.entries(productsSold).map(([productId, qty]) => {
-        const product = products.find(p => p.id == productId);
+      sales: Object.entries(productsSold).map(([productId, data]) => {
+        const product = products.find(p => p.id === Number(productId));
         return {
-          productId: parseInt(productId),
+          productId: Number(productId),
           name: product?.name || 'Unknown',
-          quantity: qty
+          quantity: data.quantity
         };
       })
     };
@@ -128,5 +143,5 @@ app.get('/reports/summary', (req, res) => {
 // SERVER
 
 app.listen(PORT, () => {
-  console.log(`✅ Backend running at http://localhost:${PORT}`);
+  console.log(` Backend running at http://localhost:${PORT}`);
 });
