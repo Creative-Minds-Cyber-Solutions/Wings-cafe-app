@@ -1,3 +1,16 @@
+# Wings Café Inventory & Sales Dashboard
+A full-stack web application built for Wings Café to manage inventory, track sales, and generate actionable business reports. Designed with modular architecture, responsive UI, and real-time analytics to support smarter stocking decisions.
+
+- Frontend: React, CSS
+- Backend: Node.js
+- Data: JSON files (products.json, sales.json)
+
+ Run backend:
+   node backend/Server.js
+
+ Run frontend:
+   npm start
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
