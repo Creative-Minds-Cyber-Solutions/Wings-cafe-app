@@ -61,7 +61,6 @@ function Sales() {
 
       {message && <div className="success-message">{message}</div>}
 
-      
       <div className="sale-input-card">
         <h3>Record a Sale</h3>
 
