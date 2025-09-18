@@ -5,10 +5,11 @@ import salesImg from '../Assets/Sal.png';
 import reportsImg from '../Assets/rep.png';
 
 function Dashboard() {
+  const BASE_URL = 'https://wings-cafe-app.onrender.com';
   const [products, setProducts] = useState([]);
 
   const fetchProducts = () => {
-    fetch('http://localhost:5000/products')
+    fetch(`${BASE_URL}/products`)
       .then(res => res.json())
       .then(data => setProducts(data));
   };

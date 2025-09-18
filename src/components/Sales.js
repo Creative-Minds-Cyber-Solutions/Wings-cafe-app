@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react';
 
 function Sales() {
+  const BASE_URL = 'https://wings-cafe-app.onrender.com';
+
   const [products, setProducts] = useState([]);
   const [sales, setSales] = useState([]);
   const [sale, setSale] = useState({ productId: '', quantity: 1 });
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:5000/products')
+    fetch(`${BASE_URL}/products`)
       .then(res => res.json())
       .then(data => setProducts(data));
 
-    fetch('http://localhost:5000/sales')
+    fetch(`${BASE_URL}/sales`)
       .then(res => res.json())
       .then(data => setSales(data.slice(-5).reverse()));
   }, []);
 
   const handleSale = () => {
-    const product = products.find(p => p.id == sale.productId);
+    const product = products.find(p => p.id === parseInt(sale.productId));
     if (!product) return;
 
     if (sale.quantity > product.quantity) {
@@ -34,17 +36,17 @@ function Sales() {
       timestamp: new Date().toISOString()
     };
 
-    fetch('http://localhost:5000/sales', {
+    fetch(`${BASE_URL}/sales`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newSale)
     }).then(() => {
       setSales([newSale, ...sales.slice(0, 4)]);
-      setMessage(`✅ Sale recorded: ${product.name} x${sale.quantity} = R${total}`);
+      setMessage(`Sale recorded: ${product.name} x${sale.quantity} = R${total}`);
       setTimeout(() => setMessage(''), 3000);
     });
 
-    fetch(`http://localhost:5000/products/${product.id}`, {
+    fetch(`${BASE_URL}/products/${product.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...product, quantity: product.quantity - sale.quantity })
@@ -59,7 +61,7 @@ function Sales() {
 
       {message && <div className="success-message">{message}</div>}
 
-      {/* Input Card */}
+      
       <div className="sale-input-card">
         <h3>Record a Sale</h3>
 
@@ -89,7 +91,9 @@ function Sales() {
           />
         </label>
 
-        <button onClick={handleSale}>Record Sale</button>
+        <button onClick={handleSale} disabled={!sale.productId}>
+          Record Sale
+        </button>
       </div>
 
       {/* Recent Sales */}

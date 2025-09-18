@@ -3,20 +3,27 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const app = express();
-const PORT = 5000;
+
+
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
-// File paths
+
+app.get('/', (req, res) => {
+  res.send('Wings Café backend is running');
+});
+
+
 const PRODUCTS = path.join(__dirname, 'products.json');
 const SALES = path.join(__dirname, 'sales.json');
 
-// Utility functions
+
 const read = file => JSON.parse(fs.readFileSync(file));
 const write = (file, data) => fs.writeFileSync(file, JSON.stringify(data, null, 2));
 
-// PRODUCTS
+
 
 app.get('/products', (req, res) => {
   res.json(read(PRODUCTS));
@@ -46,7 +53,7 @@ app.delete('/products/:id', (req, res) => {
   res.json({ success: true });
 });
 
-// SALES
+
 
 app.get('/sales', (req, res) => {
   res.json(read(SALES));
@@ -76,7 +83,6 @@ app.post('/sales', (req, res) => {
   res.status(201).json(newSale);
 });
 
-// REPORTS
 
 app.get('/reports/summary', (req, res) => {
   const products = read(PRODUCTS);
@@ -140,8 +146,6 @@ app.get('/reports/summary', (req, res) => {
   });
 });
 
-// SERVER
-
 app.listen(PORT, () => {
-  console.log(` Backend running at http://localhost:${PORT}`);
+  console.log(` Backend running on port ${PORT}`);
 });

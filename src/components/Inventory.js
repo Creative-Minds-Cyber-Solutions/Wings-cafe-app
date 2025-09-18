@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 function Inventory() {
+  const BASE_URL = 'https://wings-cafe-app.onrender.com';
+
   const [products, setProducts] = useState([]);
   const [form, setForm] = useState({
     name: '',
@@ -12,7 +14,7 @@ function Inventory() {
   const [editingProduct, setEditingProduct] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:5000/products')
+    fetch(`${BASE_URL}/products`)
       .then(res => res.json())
       .then(data => setProducts(data));
   }, []);
@@ -24,7 +26,7 @@ function Inventory() {
       quantity: parseInt(form.quantity),
       id: Date.now()
     };
-    fetch('http://localhost:5000/products', {
+    fetch(`${BASE_URL}/products`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newProduct)
@@ -59,7 +61,7 @@ function Inventory() {
       price: parseFloat(form.price),
       quantity: parseInt(form.quantity)
     };
-    fetch(`http://localhost:5000/products/${editingProduct.id}`, {
+    fetch(`${BASE_URL}/products/${editingProduct.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updatedProduct)
@@ -81,7 +83,7 @@ function Inventory() {
 
   const handleDelete = (id) => {
     if (window.confirm("Delete this product?")) {
-      fetch(`http://localhost:5000/products/${id}`, {
+      fetch(`${BASE_URL}/products/${id}`, {
         method: 'DELETE'
       })
         .then(() => {

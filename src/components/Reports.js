@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 function Reports() {
+  const BASE_URL = 'https://wings-cafe-app.onrender.com';
   const [report, setReport] = useState({});
 
   const fetchReport = () => {
     setReport({});
-    fetch('http://localhost:5000/reports/summary')
+    fetch(`${BASE_URL}/reports/summary`)
       .then(res => res.json())
       .then(data => {
         console.log("Fetched report:", data);
@@ -28,7 +29,7 @@ function Reports() {
       <h2>Inventory & Sales Summary</h2>
       <button className="refresh-btn" onClick={fetchReport}>Refresh Report</button>
 
-      {/* Summary Cards */}
+      
       <div className="report-cards">
         <div className="report-card">
           <h4>Total Sales</h4>
@@ -44,7 +45,7 @@ function Reports() {
         </div>
       </div>
 
-      {/* Sales Trends */}
+      
       <h3>Sales Trends by Product</h3>
       {salesTrends.length > 0 ? (
         <table className="sales-trend-table">
@@ -67,7 +68,7 @@ function Reports() {
         <p>No sales data available yet.</p>
       )}
 
-      {/* Daily Breakdown */}
+      
       <h3>Daily Sales Breakdown</h3>
       {dailyTrends.length > 0 ? (
         dailyTrends.map(day => (
@@ -95,7 +96,7 @@ function Reports() {
         <p>No daily sales data available.</p>
       )}
 
-      {/* Low Stock */}
+      
       <h3>Low Stock Items</h3>
       {report.lowStock?.length > 0 ? (
         <table className="low-stock-table">
