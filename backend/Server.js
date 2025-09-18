@@ -13,8 +13,8 @@ app.get('/', (req, res) => {
   res.send('Wings Café backend is running');
 });
 
-const PRODUCTS = path.join(__dirname, 'products.json');
-const SALES = path.join(__dirname, 'sales.json');
+const PRODUCTS = path.join(__dirname, 'Products.json');
+const SALES = path.join(__dirname, 'Sales.json');
 
 const read = file => JSON.parse(fs.readFileSync(file));
 const write = (file, data) => fs.writeFileSync(file, JSON.stringify(data, null, 2));
